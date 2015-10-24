@@ -1,3 +1,7 @@
+{-# OPTIONS_GHC -cpp -pgmPgcc -optP-E #-}
+
+#define SHOW_RESULT(a) (showResult #a (a))
+
 module Main where
 
 import System.Environment (getArgs)
@@ -13,22 +17,21 @@ main = do
             else runapp $ readMaybe $ head args
 
 
-resultShow :: Show a => String -> a -> IO()
-resultShow expr result = do
-    putStr expr
-    putStr " => "
-    print result
+showResult :: Show a => String -> a -> IO()
+showResult expr value = do
+    putStr $ expr ++ " => "
+    print value
 
 
 runapp :: Maybe Int -> IO ()
 runapp Nothing = putStrLn "Parse error."
 runapp (Just 1) = do 
-    resultShow "2+7" $ 2+7
-    resultShow "2-7" $ 2-7
-    resultShow "2*7" $ 2*7
-    resultShow "2/7" $ 2/7
-    resultShow "2+7*3" $ 2+7*3
-    resultShow "(2+7)*3" $ (2+7)*3
+    SHOW_RESULT(2 + 7)
+    SHOW_RESULT(2 - 7)
+    SHOW_RESULT(2 * 7)
+    SHOW_RESULT(2 / 7)
+    SHOW_RESULT(2 + 7 * 3)
+    SHOW_RESULT((2 + 7) * 3)
 
     putStrLn ""
     print $ True && False
