@@ -7,6 +7,10 @@ module Main where
 import System.Environment (getArgs)
 import Text.Read
 
+import Language.Haskell.TH
+import Language.Haskell.TH.Syntax
+import Language.Haskell.TH.Ppr
+
 import Chapter1
 
 main :: IO ()
@@ -34,27 +38,35 @@ runapp (Just 1) = do
     SHOW_RESULT((2 + 7) * 3)
 
     putStrLn ""
-    print $ True && False
-    print $ True || False
-    print $ not True
+    SHOW_RESULT(True && False)
+    SHOW_RESULT(True || False)
+    SHOW_RESULT(not True)
     
     putStrLn ""
-    print $ "hello" == "hello"
-    print $ 5 /= 5
+    SHOW_RESULT("hello" == "hello")
+    SHOW_RESULT(5 /= 5)
 
     putStrLn ""
-    print $ succ 8
-    print $ min 9 11
-    print $ max 9 11
+    SHOW_RESULT(succ 8)
+    SHOW_RESULT(min 9 11)
+    SHOW_RESULT(max 9 11)
 
     putStrLn ""
-    print $ div 92 10
-    print $ 92 `div` 10
+    SHOW_RESULT(div 92 10)
+    SHOW_RESULT(92 `div` 10)
 
     putStrLn ""
-    print $ doubleMe 9
-    print $ doubleUs 2 3
+    SHOW_RESULT(doubleMe 9)
+    SHOW_RESULT(doubleUs 2 3)
+    SHOW_RESULT(doubleUs_2 2 3)
+    SHOW_RESULT(doubleSmallNumber 86)
+    SHOW_RESULT(doubleSmallNumber 103)
+    SHOW_RESULT(doubleSmallNumber_2 103)
+    SHOW_RESULT(conanO_Brien)
 
+    putStrLn ""
+    SHOW_RESULT(lostNumbers)
+    SHOW_RESULT("hello" ++ " " ++ "world")
 
 
 runapp (Just x) = putStrLn "Not Implemented"
