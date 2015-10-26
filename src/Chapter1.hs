@@ -32,7 +32,7 @@ conanO_Brien :: String
 conanO_Brien = "It's a-me, Conan O'Brien!"
 
 
-lostNumbers = [4,88,15,16,23,42]
+lostNumbers = [4,8,15,16,23,42]
 
 
 
