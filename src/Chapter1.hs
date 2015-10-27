@@ -21,6 +21,12 @@ module Chapter1(
     , sum'
     , product'
     , elem'
+    , cycle'
+    , repeat'
+    , replicate'
+    , boomBangs
+    , nouns
+    , adjectives
 ) where
 
 
@@ -126,6 +132,26 @@ elem' e [] = False
 elem' e (x:xs) = if e == x
     then True
     else elem' e xs
+
+cycle' :: [a] -> [a]
+cycle' [] = error "empty list."
+cycle' x = x ++ cycle' x
+
+repeat' :: a -> [a]
+repeat' x = x:repeat' x
+
+replicate' :: Int -> a -> [a]
+replicate' 0 _ = []
+replicate' n x = x:replicate' (n-1) x
+
+boomBangs :: [Int] -> [String]
+boomBangs xs = [if x < 10 then "BOOM!" else "BANG!" | x <- xs, odd x]
+
+nouns :: [String]
+nouns = ["hobo", "frog", "pope"]
+adjectives :: [String]
+adjectives = ["lazy", "grouchy", "scheming"]
+
 
 
 

@@ -2,7 +2,7 @@
 module Main where
 
 import System.Environment (getArgs)
-import Text.Read
+import Text.Read(readMaybe)
 
 import Language.Haskell.Interpreter
 
@@ -13,39 +13,21 @@ main = do
         args <- getArgs
         if args == []
             then putStrLn "Invalid Argment."
-            else do
-                setImportsQ ( (zip unqualifieds $ repeat Nothing) ++ qualifieds)
-                runapp $ readMaybe $ head args
-                where
-                    unqualifieds = ["Prelude", "Chapter1"]
-                    qualifieds = []
-                    
+            else do 
+                runInterpreter $ (setImportsQ ( (zip ["Prelude", "Chapter1"] $ repeat Nothing))) >> (runapp $ readMaybe $ head args)
+                return ()
 
-showGhcError :: [GhcError] -> IO()
-showGhcError [] = putStrLn ""
-showGhcError (GhcError err:errlist) = do
-    putStrLn err
-    showGhcError errlist
+printStr :: String -> Interpreter ()
+printStr = lift.putStrLn
 
-showResult :: String -> Interpreter
+showResult :: String -> Interpreter ()
 showResult expr = do
-    result <- runInterpreter $ setImportsQ ( (zip unqualifieds $ repeat Nothing) ++ qualifieds) >> eval expr
-    case result of
-        Right x -> putStrLn $ expr ++ " => " ++ x
-        Left e -> case e of
-            GhcException p ->  putStrLn $ "Error(GhcException) => " ++ p
-            UnknownError p ->  putStrLn $ "Error(UnknownError) => " ++ p
-            WontCompile p ->  do
-                putStrLn "Error(WontCompile) =>"
-                showGhcError p
-            NotAllowed p ->  putStrLn $ "Error(NotAllowed) => " ++ p
-        
-
-
-runapp :: Maybe Int -> IO ()
-runapp Nothing = putStrLn "Parse error."
+    result <- eval expr
+    printStr $ expr ++ " =>  " ++ result
+    
+runapp :: Maybe Int -> Interpreter ()
+runapp Nothing = printStr "Parse error."
 runapp (Just 1) = do 
-{-
     showResult "1+1"
     showResult "doubleMe 1"
     showResult "2 - 7"
@@ -54,25 +36,25 @@ runapp (Just 1) = do
     showResult "2 + 7 * 3"
     showResult "(2 + 7) * 3"
 
-    putStrLn ""
+    printStr ""
     showResult "True && False"
     showResult "True || False"
     showResult "not True"
     
-    putStrLn ""
+    printStr ""
     showResult "\"hello\" == \"hello\""
     showResult "5 /= 5"
 
-    putStrLn ""
+    printStr ""
     showResult "succ 8"
     showResult "min 9 11"
     showResult "max 9 11"
 
-    putStrLn ""
+    printStr ""
     showResult "div 92 10"
     showResult "92 `div` 10"
 
-    putStrLn ""
+    printStr ""
     showResult "doubleMe 9"
     showResult "doubleUs 2 3"
     showResult "doubleUs_2 2 3"
@@ -81,7 +63,7 @@ runapp (Just 1) = do
     showResult "doubleSmallNumber_2 103"
     showResult "conanO_Brien"
 
-    putStrLn ""
+    printStr ""
     showResult "lostNumbers"
     showResult "[1,2,3,4] ++ [9,10,11,12]"
     showResult "\"hello\" ++ \" \" ++ \"world\""
@@ -90,20 +72,20 @@ runapp (Just 1) = do
     showResult "'A':\" SMALL CAT\""
     showResult "[1,2,3,4] ++ [5]"
 
-    putStrLn ""
+    printStr ""
     showResult "\"Steve Buscemi\" !! 6 "
     showResult "nestingList"
     showResult "nestingList ++ [[1,1,1,1]]"
     showResult "[6,6,6]:nestingList"
 
-    putStrLn ""
+    printStr ""
     showResult "[3,2,1] > [2,1,0]"
     showResult "[3,2,1] > [2,10,100]"
     showResult "[3,4,2] < [3,4,3]"
     showResult "[3,4,2] > [2,4]"
     showResult "[3,4,2] == [3,4,2]"
 
-    putStrLn ""
+    printStr ""
     showResult "head' [5,4,3,2,1]"
     showResult "tail' [5,4,3,2,1]"
     showResult "last' [5,4,3,2,1]"
@@ -120,12 +102,35 @@ runapp (Just 1) = do
     showResult "product' [5,4,3,2,1]"
     showResult "elem' 4 [5,4,3,2,1]"
     showResult "elem' 6 [5,4,3,2,1]"
--}
-    putStrLn ""
+
+    printStr ""
+    showResult "[1..20]"
+    showResult "['a'..'z']"
+    showResult "['K'..'Z']"
+    showResult "[2,4..20]"
+    showResult "[3,6..20]"
+    showResult "[13,26..24*13]"
+    showResult "take 24 [13,26..]"
+    showResult "take 10 (cycle' [1,2,3])"
+    showResult "take 12 (cycle' \"LOL \")"
+    showResult "take 10 (repeat' 5)"
+    showResult "replicate' 3 10"
+    showResult "[0.1,0.3..1]"
     
+    printStr ""
+    showResult "[x*2 | x <- [1..10]]"
+    showResult "[x*2 | x <- [1..10],x*2 >= 12]"
+    showResult "[x | x <- [50..100], x `mod` 7 == 3]"
+    showResult "boomBangs [7..13]"
+    showResult "[x | x <- [10..20], x/=13, x/=15, x/=19]"
+    showResult "[x+y | x <- [1,2,3], y <- [10,100,1000]]"
+    showResult "[x*y | x <- [2,5,10], y <- [8,10,11]]"
+    showResult "[adjective ++ \" \" ++ noun | adjective <- adjectives, noun <- nouns]"
 
-    showResult "error \"test\""
 
-runapp (Just x) = putStrLn "Not Implemented"
+
+
+
+runapp (Just x) = printStr "Not Implemented"
 
 
