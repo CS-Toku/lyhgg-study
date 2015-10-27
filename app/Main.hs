@@ -13,7 +13,13 @@ main = do
         args <- getArgs
         if args == []
             then putStrLn "Invalid Argment."
-            else runapp $ readMaybe $ head args
+            else do
+                setImportsQ ( (zip unqualifieds $ repeat Nothing) ++ qualifieds)
+                runapp $ readMaybe $ head args
+                where
+                    unqualifieds = ["Prelude", "Chapter1"]
+                    qualifieds = []
+                    
 
 showGhcError :: [GhcError] -> IO()
 showGhcError [] = putStrLn ""
@@ -21,11 +27,9 @@ showGhcError (GhcError err:errlist) = do
     putStrLn err
     showGhcError errlist
 
-showResult :: String -> IO()
+showResult :: String -> Interpreter
 showResult expr = do
-    let unqualifieds = ["Prelude", "Chapter1"]
-    let qualifieds = []
-    result <- runInterpreter $ (setImportsQ $ (zip unqualifieds $ repeat Nothing) ++ qualifieds) >> eval expr
+    result <- runInterpreter $ setImportsQ ( (zip unqualifieds $ repeat Nothing) ++ qualifieds) >> eval expr
     case result of
         Right x -> putStrLn $ expr ++ " => " ++ x
         Left e -> case e of
