@@ -1,6 +1,19 @@
-module Chapter2
-    ( someFunc2
+module Chapter2(
+      addThree
+    , factorial
+    , circumference
+    , circumference'
     ) where
 
-someFunc2 :: IO ()
-someFunc2 = putStrLn "someFunc2"
+addThree :: Int -> Int -> Int -> Int
+addThree x y z = x+y+z
+
+factorial :: Integer -> Integer
+factorial n = product [1..n]
+
+circumference :: Float -> Float
+circumference r = 2 * pi * r
+
+circumference' :: Double -> Double 
+circumference' r = 2 * pi * r
+

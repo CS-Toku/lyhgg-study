@@ -27,6 +27,9 @@ module Chapter1(
     , boomBangs
     , nouns
     , adjectives
+    , length''
+    , removeNonUppercase
+    , nestNumberList
 ) where
 
 
@@ -152,9 +155,17 @@ nouns = ["hobo", "frog", "pope"]
 adjectives :: [String]
 adjectives = ["lazy", "grouchy", "scheming"]
 
+length'' :: [a] -> Int
+length'' xs = sum [ 1 | _ <- xs ]
 
+removeNonUppercase :: String -> String
+removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z'] ]
 
-
+nestNumberList = [  
+                    [1,2,3,4,5],
+                    [2,3,4,5,6],
+                    [3,4,5,6,7]
+                 ]
 
 
 

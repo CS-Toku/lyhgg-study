@@ -14,7 +14,7 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                runInterpreter $ (setImportsQ ( (zip ["Prelude", "Chapter1"] $ repeat Nothing))) >> (runapp $ readMaybe $ head args)
+                runInterpreter $ (setImportsQ ( (zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing))) >> (runapp $ readMaybe $ head args)
                 return ()
 
 printStr :: String -> Interpreter ()
@@ -126,8 +126,69 @@ runapp (Just 1) = do
     showResult "[x+y | x <- [1,2,3], y <- [10,100,1000]]"
     showResult "[x*y | x <- [2,5,10], y <- [8,10,11]]"
     showResult "[adjective ++ \" \" ++ noun | adjective <- adjectives, noun <- nouns]"
+    showResult "length' [1,2,3]"
+    showResult "removeNonUppercase \"Test Message\""
+
+    printStr ""
+    showResult "(1,3)"
+    showResult "(3, 'a', \"hello\")"
+    showResult "(50, 50.4, \"hello\", 'b')"
+
+    printStr ""
+    showResult "fst (8, 11)"
+    showResult "fst (\"Wow\", False)"
+    showResult "snd (8, 11)"
+    showResult "snd (\"Wow\", False)"
+
+    printStr ""
+    showResult "zip [1,2,3,4,5] [5,5,5,5,5]"
+    showResult "zip [1..5] [\"one\",\"two\",\"three\",\"four\",\"five\"]"
+    showResult "zip [1..] [\"one\",\"two\",\"three\",\"four\",\"five\"]"
+
+    printStr ""
+    showResult "[ (a, b, c) | c <- [1..10], a <- [1..c], b <- [1..a], a+b+c == 24, a^2+b^2 == c^2 ]"
 
 
+runapp (Just 2) = do
+    printStr ""
+    showResult "addThree 1 2 3"
+    showResult "factorial 50"
+    showResult "circumference 5"
+    showResult "circumference' 5"
+
+    printStr ""
+    showResult "5 == 5"
+    showResult "(/=) 5 5"
+    printStr ""
+    showResult "5 `compare` 5"
+    showResult "5 `compare` 4"
+    showResult "4 `compare` 5"
+    printStr ""
+    showResult "show 3"
+    showResult "show 5.334"
+    showResult "show True"
+    printStr ""
+    showResult "read \"3\" :: Int"
+    showResult "read \"5.334\" :: Float"
+    showResult "read \"True\" :: Bool"
+    printStr ""
+    showResult "['a'..'e']"
+    showResult "[LT .. GT]"
+    showResult "[3..5]"
+    showResult "succ 'B'"
+    showResult "succ 'B'"
+    printStr ""
+    showResult "minBound :: Int"
+    showResult "maxBound :: Char"
+    showResult "maxBound :: Bool"
+    showResult "minBound :: Bool"
+
+
+runapp (Just 3) = do
+    printStr ""
+    showResult "lucky 7"
+    showResult "lucky 0"
+ 
 
 
 
