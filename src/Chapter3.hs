@@ -14,4 +14,3 @@ sayMe 4 = "Four!"
 sayMe 5 = "Five!"
 sayMe x = "Not between 1 and 5"
 
-
