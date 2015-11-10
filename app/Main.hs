@@ -14,11 +14,9 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                    let
-                        unqualified = ["Prelude", "Chapter1", "Chapter2", "Chapter3"]
-                        qualified = []
-                    in
-                        runInterpreter $ (setImportsQ ( (zip  $ unqualified repeat Nothing) ++ qualified)) >> (runapp $ readMaybe $ head args)
+                let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3", "Chapter5"] $ repeat Nothing
+                let qualified = [("Chapter4", Just "C4")]
+                runInterpreter $ (setImportsQ $ unqualified ++ qualified) >> (runapp $ readMaybe $ head args)
                 return ()
 
 printStr :: String -> Interpreter ()
@@ -230,8 +228,42 @@ runapp (Just 3) = do
 runapp (Just 4) = printStr "Not Implemented about chapter4"
 
 
+runapp (Just 4) = do
+    printStr ""
+    showResult "C4.maximum' [1,3,5,7,9,2,4,6,8,0]"
+    showResult "C4.replicate' 3 5"
+    showResult "C4.take' 3 [1,3,5,7,9,2,4,6,8,0]"
+    showResult "C4.reverse' [1,2,3,4,5,6,7,8,9]"
+    showResult "C4.take' 5 $ C4.repeat' 3"
+    showResult "C4.zip' [1,2,3,4] \"abcdefg\""
+    showResult "2 `C4.elem'` [1,2,3,4]"
+    showResult "5 `C4.elem'` [1,2,3,4]"
+    showResult "C4.quickSort [1,3,5,7,9,2,4,6,8,0]"
+ 
+
+runapp (Just 5) = do
+    showResult "max 4 5"
+    showResult "(max 4) 5"
+    showResult "multTwoWithNine 4 5"
+    showResult "compareWithHundred 102"
+    showResult "compareWithHundred' 102"
+    showResult "divideByTen 2"
+    showResult "(/10) 2"
+    showResult "isUpperAlphanum 'G'"
+    showResult "applyTwice (+1) 1"
+    showResult "applyTwice (3:) [1]"
+    showResult "zipWith' (+) [1,2,3] [4,5,6,7]"
+    showResult "zipWith' (+) [1,2,3] []"
+    showResult "zipWith' (zipWith' (*)) [[1,2,3], [3,5,6],[2,3,4]] [[3,2,2],[3,4,5],[5,4,3]]"
+    showResult "map' (1+) [1,2,3]"
+    showResult "filter' (<3) [1..5]"
+    showResult "largestDivisible 1000000 43027"
+    showResult "squareOddNumSum 10000"
+    showResult "collatzchain 100"
+    showResult "cnumLongChains"
+    
+
 
 
 runapp (Just x) = printStr "Not Implemented"
-
 
