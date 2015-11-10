@@ -14,7 +14,11 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                runInterpreter $ (setImportsQ ( (zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing))) >> (runapp $ readMaybe $ head args)
+                    let
+                        unqualified = ["Prelude", "Chapter1", "Chapter2", "Chapter3"]
+                        qualified = []
+                    in
+                        runInterpreter $ (setImportsQ ( (zip  $ unqualified repeat Nothing) ++ qualified)) >> (runapp $ readMaybe $ head args)
                 return ()
 
 printStr :: String -> Interpreter ()
@@ -188,7 +192,43 @@ runapp (Just 3) = do
     printStr ""
     showResult "lucky 7"
     showResult "lucky 0"
+
+    showResult "sayMe 2"
+    showResult "sayMe 3"
+    showResult "sayMe 5"
+    showResult "sayMe 0"
+
+    showResult "fractorial 5"
+
+    showResult "first (1,2,3)"
+    showResult "second (1,2,3)"
+    showResult "third (1,2,3)"
  
+    showResult "addPair [(2,3), (5,6), (2,7), (1,3)]"
+    showResult "[x*100+3 | (x, 3) <- [(2,3), (5,6), (2,7), (1,3)]]"
+    showResult "firstLetter \"Test Message.\""
+    showResult "bmiTell 70 1.8"
+
+    showResult "max' 3 2"
+    showResult "3 `myCompare` 2"
+    showResult "initials \"Uduki\" \"Shimamura\""
+
+    showResult "calcBmis [(70,1.8), (50,1.6), (60,1.6)]"
+
+    showResult "cylinder 3 5"
+    showResult "4 * (let a = 9 in a + 1) + 2"
+    showResult "calcBmis' [(70,1.8), (50,1.6), (60,1.6)]"
+
+    showResult "describeList []"
+    showResult "describeList [6]"
+    showResult "describeList [1,2,3,4,5,6]"
+    showResult "describeList' []"
+    showResult "describeList' [6]"
+    showResult "describeList' [1,2,3,4,5,6]"
+
+
+runapp (Just 4) = printStr "Not Implemented about chapter4"
+
 
 
 
