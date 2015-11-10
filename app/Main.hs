@@ -14,9 +14,11 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3", "Chapter5"] $ repeat Nothing
-                let qualified = [("Chapter4", Just "C4")]
-                runInterpreter $ (setImportsQ $ unqualified ++ qualified) >> (runapp $ readMaybe $ head args)
+                let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
+                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Data.List", Just "L")]
+                runInterpreter $ do
+                    setImportsQ $ unqualified ++ qualified
+                    runapp.readMaybe.head $ args
                 return ()
 
 printStr :: String -> Interpreter ()
@@ -225,9 +227,6 @@ runapp (Just 3) = do
     showResult "describeList' [1,2,3,4,5,6]"
 
 
-runapp (Just 4) = printStr "Not Implemented about chapter4"
-
-
 runapp (Just 4) = do
     printStr ""
     showResult "C4.maximum' [1,3,5,7,9,2,4,6,8,0]"
@@ -244,26 +243,46 @@ runapp (Just 4) = do
 runapp (Just 5) = do
     showResult "max 4 5"
     showResult "(max 4) 5"
-    showResult "multTwoWithNine 4 5"
-    showResult "compareWithHundred 102"
-    showResult "compareWithHundred' 102"
-    showResult "divideByTen 2"
+    showResult "C5.multTwoWithNine 4 5"
+    showResult "C5.compareWithHundred 102"
+    showResult "C5.compareWithHundred' 102"
+    showResult "C5.divideByTen 2"
     showResult "(/10) 2"
-    showResult "isUpperAlphanum 'G'"
-    showResult "applyTwice (+1) 1"
-    showResult "applyTwice (3:) [1]"
-    showResult "zipWith' (+) [1,2,3] [4,5,6,7]"
-    showResult "zipWith' (+) [1,2,3] []"
-    showResult "zipWith' (zipWith' (*)) [[1,2,3], [3,5,6],[2,3,4]] [[3,2,2],[3,4,5],[5,4,3]]"
-    showResult "map' (1+) [1,2,3]"
-    showResult "filter' (<3) [1..5]"
-    showResult "largestDivisible 1000000 43027"
-    showResult "squareOddNumSum 10000"
-    showResult "collatzchain 100"
-    showResult "cnumLongChains"
+    showResult "C5.isUpperAlphanum 'G'"
+    showResult "C5.applyTwice (+1) 1"
+    showResult "C5.applyTwice (3:) [1]"
+    showResult "C5.zipWith' (+) [1,2,3] [4,5,6,7]"
+    showResult "C5.zipWith' (+) [1,2,3] []"
+    showResult "C5.zipWith' (C5.zipWith' (*)) [[1,2,3], [3,5,6],[2,3,4]] [[3,2,2],[3,4,5],[5,4,3]]"
+    showResult "C5.map' (1+) [1,2,3]"
+    showResult "C5.filter' (<3) [1..5]"
+    showResult "C5.largestDivisible 1000000 43027"
+    showResult "C5.squareOddNumSum 10000"
+    showResult "C5.collatzchain 100"
+    showResult "C5.cnumLongChains"
+    showResult "(C5.listOfFuns !! 4) 2"
+    showResult "C5.zipWith' (\\a b -> (a * 30 + 3) / b) [5,4..1] [1..5]"
+    showResult "map (C5.flip' subtract 20) [1..4]"
+    showResult "C5.sum' [1..10]"
+    showResult "C5.map'' (+1) [1..10]"
+    showResult "C5.maximum' [1,3,5,7,9,2,4,6,8]"
+    showResult "C5.reverse' [1..5]"
+    showResult "C5.product' [1..5]"
+    showResult "C5.filter'' (<3) [1..5]"
+    showResult "C5.last' [1..5]"
+    showResult "C5.scanl' (+) 0 [3,5,2,1]"
+    showResult "C5.scanr' (+) 0 [3,5,2,1]"
+    showResult "C5.sumSqrt 1000"
+    showResult "C5.sumSqrt' 1000"
+    showResult "map ($ 3) [(4+), (10*), (2^), sqrt]"
     
 
-
+runapp (Just 6) = do
+    showResult "C6.numUniques [1,1,2,2,3,3,4,4,5,5,6,7,8,8,9,9]"
+    showResult "L.words \"hey these are the words in this sentence\""
+    showResult "L.group [1,2,3,1,2,3,1,2,3,4,2,3,3,4,5,3,4,5,6,4,5,6,4,7,5,6,5,7,8,6,7,8,6,8,9,9,6]"
+    showResult "L.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
+    showResult "L.sort [5,4,3,7,2,1]"
 
 runapp (Just x) = printStr "Not Implemented"
 
