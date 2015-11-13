@@ -15,7 +15,7 @@ main = do
             then putStrLn "Invalid Argment."
             else do 
                 let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
-                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Data.List", Just "L")]
+                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
                 runInterpreter $ do
                     setImportsQ $ unqualified ++ qualified
                     runapp.readMaybe.head $ args
@@ -279,10 +279,37 @@ runapp (Just 5) = do
 
 runapp (Just 6) = do
     showResult "C6.numUniques [1,1,2,2,3,3,4,4,5,5,6,7,8,8,9,9]"
-    showResult "L.words \"hey these are the words in this sentence\""
-    showResult "L.group [1,2,3,1,2,3,1,2,3,4,2,3,3,4,5,3,4,5,6,4,5,6,4,7,5,6,5,7,8,6,7,8,6,8,9,9,6]"
-    showResult "L.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
-    showResult "L.sort [5,4,3,7,2,1]"
+    showResult "List.words \"hey these are the words in this sentence\""
+    showResult "List.group [1,2,3,1,2,3,1,2,3,4,2,3,3,4,5,3,4,5,6,4,5,6,4,7,5,6,5,7,8,6,7,8,6,8,9,9,6]"
+    showResult "List.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
+    showResult "List.sort [5,4,3,7,2,1]"
+
+    showResult "C6.encode 3 \"test message!!\""
+    showResult "C6.decode 3 \"whvw#phvvdjh$$\""
+    showResult "C6.digitSum 1234567890"
+    showResult "C6.firstTo 40"
+
+    showResult "C6.findKey 1 [(1,3),(2,4),(3,5)]"
+    showResult "C6.findKey' 2 [(1,3),(2,4),(3,5)]"
+    showResult "C6.findKey'' 3 [(1,3),(2,4),(3,5)]"
+    
+    showResult "Map.fromList C6.phoneList"
+    showResult "Map.lookup \"wendy\" C6.phoneMap"
+    showResult "Map.insert \"testman\" \"333-4444\" C6.phoneMap"
+    showResult "Map.size C6.phoneMap"
+    showResult "C6.string2digits \"123-4567\""
+    showResult "Map.map C6.string2digits C6.phoneMap"
+    showResult "C6.phoneBookToMap C6.phoneList"
+    showResult "Map.fromListWith max [(2,3), (2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)]"
+    showResult "Map.fromListWith (+) [(2,3), (2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)]"
+
+    showResult "Sphere.area 4"
+    showResult "Cuboid.volume 3 2 5"
+    showResult "Cube.area 6"
+
+
+runapp (Just 7) = printStr "Not Implemented"
+
 
 runapp (Just x) = printStr "Not Implemented"
 
