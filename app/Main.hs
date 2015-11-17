@@ -15,7 +15,7 @@ main = do
             then putStrLn "Invalid Argment."
             else do 
                 let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
-                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
+                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Chapter7", Just "C7"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
                 runInterpreter $ do
                     setImportsQ $ unqualified ++ qualified
                     runapp.readMaybe.head $ args
@@ -308,7 +308,36 @@ runapp (Just 6) = do
     showResult "Cube.area 6"
 
 
-runapp (Just 7) = printStr "Not Implemented"
+runapp (Just 7) = do
+    showResult "C7.area' $ C7.Circle' 1 2 3"
+    showResult "C7.area' $ C7.Rectangle' 1 2 3 4"
+    showResult "C7.Rectangle' 1 2 3 4"
+    showResult "C7.area $ C7.Circle (C7.Point 1 2) 3"
+    showResult "C7.area $ C7.Rectangle (C7.Point 1 2) (C7.Point 3 4)"
+    showResult "C7.nudge (C7.Circle (C7.Point 1 2) 3) (C7.Point 1 1)"
+    showResult "C7.nudge (C7.Rectangle (C7.Point 1 2) (C7.Point 3 4)) (C7.Point 1 1)"
+    showResult "C7.nudge (C7.baseCircle 4) (C7.Point 5 5)"
+    showResult "C7.nudge (C7.baseRect 6 4) (C7.Point 5 5)"
+    showResult "C7.firstName $ C7.Person \"F\" \"L\" 1 1.6 \"00-0000-0000\" \"Chocolate\""
+    showResult "C7.Person { C7.firstName=\"F\", C7.lastName=\"L\", C7.phoneNumber=\"00-0000-0000\", C7.age=1, C7.height=1.6, C7.flavor=\"Chocolate\"}"
+    showResult "C7.Vector 1 2 3 `C7.vplus` C7.Vector 4 5 6"
+    showResult "C7.Vector 1 2 3 `C7.dotProd` C7.Vector 4 5 6"
+    showResult "C7.Vector 1 2 3 `C7.vmult` 6"
+
+    showResult "\"mikeD is : \" ++ show C7.mikeD"
+    showResult "read C7.mikeDstr::C7.Person'"
+    showResult "read C7.mikeDstr == C7.mikeD"
+    showResult "False < True"
+    showResult "Nothing < Just 1"
+    showResult "Just 3 < Just 5"
+    showResult "succ C7.Monday"
+    showResult "C7.Friday < C7.Sunday"
+    showResult "C7.Friday /= C7.Sunday"
+    showResult "show C7.Friday"
+    showResult "read \"Friday\"::C7.Day"
+    showResult "maxBound::C7.Day"
+    showResult "[C7.Tuesday .. C7.Saturday]"
+    showResult "[C7.Tuesday ..]"
 
 
 runapp (Just x) = printStr "Not Implemented"
