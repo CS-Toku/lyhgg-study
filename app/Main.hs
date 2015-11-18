@@ -6,8 +6,6 @@ import Text.Read(readMaybe)
 
 import Language.Haskell.Interpreter
 
-import Chapter1
-
 main :: IO ()
 main = do
         args <- getArgs
@@ -15,7 +13,7 @@ main = do
             then putStrLn "Invalid Argment."
             else do 
                 let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
-                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Data.List", Just "L")]
+                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Chapter7", Just "C7"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
                 runInterpreter $ do
                     setImportsQ $ unqualified ++ qualified
                     runapp.readMaybe.head $ args
@@ -278,15 +276,71 @@ runapp (Just 5) = do
     
 
 runapp (Just 6) = do
+    showResult "List.words \"hey these are the words in this sentence\""
+    showResult "List.group [1,2,3,1,2,3,1,2,3,4,2,3,3,4,5,3,4,5,6,4,5,6,4,7,5,6,5,7,8,6,7,8,6,8,9,9,6]"
+    showResult "List.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
+    showResult "List.sort [5,4,3,7,2,1]"
+
     showResult "C6.numUniques [1,1,2,2,3,3,4,4,5,5,6,7,8,8,9,9]"
-    showResult "L.words \"hey these are the words in this sentence\""
-    showResult "L.group [1,2,4,5,5,6,5,7,7,8,8,9,9,6]"
-    showResult "L.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
-    showResult "L.sort [5,4,3,7,2,1]"
     showResult "C6.wordNums \"wa wa wee wa\""
     showResult "\"fghl\" `C6.isIn` \"asdfghjkl;\""
     showResult "\"fghj\" `C6.isIn'` \"asdfghjkl;\""
     showResult "C6.encode 10 \"Hello world.\""
+    showResult "C6.encode 3 \"test message!!\""
+    showResult "C6.decode 3 \"whvw#phvvdjh$$\""
+    showResult "C6.digitSum 1234567890"
+    showResult "C6.firstTo 40"
+
+    showResult "C6.findKey 1 [(1,3),(2,4),(3,5)]"
+    showResult "C6.findKey' 2 [(1,3),(2,4),(3,5)]"
+    showResult "C6.findKey'' 3 [(1,3),(2,4),(3,5)]"
+    
+    showResult "Map.fromList C6.phoneList"
+    showResult "Map.lookup \"wendy\" C6.phoneMap"
+    showResult "Map.insert \"testman\" \"333-4444\" C6.phoneMap"
+    showResult "Map.size C6.phoneMap"
+    showResult "C6.string2digits \"123-4567\""
+    showResult "Map.map C6.string2digits C6.phoneMap"
+    showResult "C6.phoneBookToMap C6.phoneList"
+    showResult "Map.fromListWith max [(2,3), (2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)]"
+    showResult "Map.fromListWith (+) [(2,3), (2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)]"
+
+    showResult "Sphere.area 4"
+    showResult "Cuboid.volume 3 2 5"
+    showResult "Cube.area 6"
+
+
+runapp (Just 7) = do
+    showResult "C7.area' $ C7.Circle' 1 2 3"
+    showResult "C7.area' $ C7.Rectangle' 1 2 3 4"
+    showResult "C7.Rectangle' 1 2 3 4"
+    showResult "C7.area $ C7.Circle (C7.Point 1 2) 3"
+    showResult "C7.area $ C7.Rectangle (C7.Point 1 2) (C7.Point 3 4)"
+    showResult "C7.nudge (C7.Circle (C7.Point 1 2) 3) (C7.Point 1 1)"
+    showResult "C7.nudge (C7.Rectangle (C7.Point 1 2) (C7.Point 3 4)) (C7.Point 1 1)"
+    showResult "C7.nudge (C7.baseCircle 4) (C7.Point 5 5)"
+    showResult "C7.nudge (C7.baseRect 6 4) (C7.Point 5 5)"
+    showResult "C7.firstName $ C7.Person \"F\" \"L\" 1 1.6 \"00-0000-0000\" \"Chocolate\""
+    showResult "C7.Person { C7.firstName=\"F\", C7.lastName=\"L\", C7.phoneNumber=\"00-0000-0000\", C7.age=1, C7.height=1.6, C7.flavor=\"Chocolate\"}"
+    showResult "C7.Vector 1 2 3 `C7.vplus` C7.Vector 4 5 6"
+    showResult "C7.Vector 1 2 3 `C7.dotProd` C7.Vector 4 5 6"
+    showResult "C7.Vector 1 2 3 `C7.vmult` 6"
+
+    showResult "\"mikeD is : \" ++ show C7.mikeD"
+    showResult "read C7.mikeDstr::C7.Person'"
+    showResult "read C7.mikeDstr == C7.mikeD"
+    showResult "False < True"
+    showResult "Nothing < Just 1"
+    showResult "Just 3 < Just 5"
+    showResult "succ C7.Monday"
+    showResult "C7.Friday < C7.Sunday"
+    showResult "C7.Friday /= C7.Sunday"
+    showResult "show C7.Friday"
+    showResult "read \"Friday\"::C7.Day"
+    showResult "maxBound::C7.Day"
+    showResult "[C7.Tuesday .. C7.Saturday]"
+    showResult "[C7.Tuesday ..]"
+
 
 runapp (Just x) = printStr "Not Implemented"
 
