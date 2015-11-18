@@ -14,7 +14,7 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                let unqualified = zip ["Prelude", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
+                let unqualified = zip ["Prelude", "Data.Either", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
                 let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Chapter7", Just "C7"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
                 runInterpreter $ do
                     setImportsQ $ unqualified ++ qualified
@@ -338,6 +338,10 @@ runapp (Just 7) = do
     showResult "maxBound::C7.Day"
     showResult "[C7.Tuesday .. C7.Saturday]"
     showResult "[C7.Tuesday ..]"
+
+    showResult "C7.lockerLookup 100 C7.lockers"
+    showResult "C7.lockerLookup 101 C7.lockers"
+    showResult "C7.lockerLookup 102 C7.lockers"
 
 
 runapp (Just x) = printStr "Not Implemented"
