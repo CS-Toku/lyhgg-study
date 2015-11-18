@@ -35,9 +35,6 @@ isIn' needle = any (isPrefixOf needle).tails
 encode :: Int -> String -> String
 encode offset = map $ chr.(+offset).ord
 
-encode :: Int -> String -> String
-encode offset = map $ chr.(+offset).ord
-
 decode :: Int -> String -> String
 decode shift = map $ chr.(subtract shift).ord
 
