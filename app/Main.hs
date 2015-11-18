@@ -280,9 +280,13 @@ runapp (Just 5) = do
 runapp (Just 6) = do
     showResult "C6.numUniques [1,1,2,2,3,3,4,4,5,5,6,7,8,8,9,9]"
     showResult "L.words \"hey these are the words in this sentence\""
-    showResult "L.group [1,2,3,1,2,3,1,2,3,4,2,3,3,4,5,3,4,5,6,4,5,6,4,7,5,6,5,7,8,6,7,8,6,8,9,9,6]"
+    showResult "L.group [1,2,4,5,5,6,5,7,7,8,8,9,9,6]"
     showResult "L.group [\"boom\", \"bip\", \"bip\", \"boom\", \"boom\"]"
     showResult "L.sort [5,4,3,7,2,1]"
+    showResult "C6.wordNums \"wa wa wee wa\""
+    showResult "\"fghl\" `C6.isIn` \"asdfghjkl;\""
+    showResult "\"fghj\" `C6.isIn'` \"asdfghjkl;\""
+    showResult "C6.encode 10 \"Hello world.\""
 
 runapp (Just x) = printStr "Not Implemented"
 
