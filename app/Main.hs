@@ -14,10 +14,16 @@ main = do
             else do 
                 let unqualified = zip ["Prelude", "Data.Either", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
                 let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Chapter7", Just "C7"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
-                runInterpreter $ do
+                result <- runInterpreter $ do
                     setImportsQ $ unqualified ++ qualified
                     runapp.readMaybe.head $ args
-                return ()
+                case result of
+                    Left (UnknownError x) -> putStrLn $ "UnknownError: " ++ x
+                    Left (NotAllowed x) -> putStrLn $ "NotAllowed: " ++  x
+                    Left (GhcException x) -> putStrLn $ "GhcException: " ++ x
+                    Left (WontCompile xs) -> mapM_ putStrLn $ map errMsg xs
+                    Right _ -> return ()
+
 
 printStr :: String -> Interpreter ()
 printStr = lift.putStrLn
@@ -344,7 +350,14 @@ runapp (Just 7) = do
     showResult "C7.lockerLookup 100 C7.lockers"
     showResult "C7.lockerLookup 101 C7.lockers"
     showResult "C7.lockerLookup 102 C7.lockers"
+    showResult "5 `C7.Cons'` C7.Empty'"
+    showResult "4 `C7.Cons'` (5 `C7.Cons'` C7.Empty')"
+    showResult "1 C7.:-: 2 C7.:-: 3 C7.:-: C7.Empty'''"
+    showResult "1 C7.:-: C7.Empty''' C7.^++ 2 C7.:-: C7.Empty'''"
 
 
 runapp (Just x) = printStr "Not Implemented"
+
+
+
 
