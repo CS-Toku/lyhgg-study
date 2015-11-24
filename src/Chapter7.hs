@@ -25,6 +25,13 @@ module Chapter7 (
     , List''(..)
     , List'''(..)
     , (^++)
+    , Tree(..)
+    , singleton
+    , treeInsert
+    , treeElem
+    , numsTree
+    , TrafficLight(..)
+    , MyEq(..)
     ) where
 
 import Data.Either
@@ -134,5 +141,48 @@ infixr 5 ^++
 (^++) :: List''' a -> List''' a -> List''' a
 Empty''' ^++ ys = ys
 (x:-:xs) ^++ ys = x:-:(xs ^++ ys)
+
+
+data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving (Show)
+singleton :: a -> Tree a
+singleton x = Node x EmptyTree EmptyTree
+
+treeInsert :: (Ord a) => a -> Tree a -> Tree a
+treeInsert x EmptyTree = singleton x
+treeInsert x (Node a left right)
+    | x == a  = Node x right left
+    | x < a = Node a (treeInsert x left) right
+    | x > a = Node a left (treeInsert x right)
+
+treeElem :: Ord a => a -> Tree a -> Bool
+treeElem x EmptyTree = False
+treeElem x (Node a left right)
+    | x == a = True
+    | x < a = treeElem x left
+    | x > a = treeElem x right
+
+numsTree :: Tree Int
+numsTree = foldr treeInsert EmptyTree [8,6,4,1,7,3,5]
+
+class MyEq a where
+    (^==) :: a -> a -> Bool
+    (^/=) :: a -> a -> Bool
+    x ^== y = not (x ^/= y)
+    x ^/= y = not (x ^== y)
+
+data TrafficLight = Red | Yellow | Green
+instance MyEq TrafficLight where  
+    Red ^== Red = True
+    Yellow ^== Yellow = True
+    Green ^== Green = True
+    _ ^== _ = False
+
+instance Show TrafficLight where
+    show Red = "Red light"
+    show Yellow = "Yellow light"
+    show Green = "Green light"
+
+
+
 
 

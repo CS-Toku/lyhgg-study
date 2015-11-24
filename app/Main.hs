@@ -354,6 +354,11 @@ runapp (Just 7) = do
     showResult "4 `C7.Cons'` (5 `C7.Cons'` C7.Empty')"
     showResult "1 C7.:-: 2 C7.:-: 3 C7.:-: C7.Empty'''"
     showResult "1 C7.:-: C7.Empty''' C7.^++ 2 C7.:-: C7.Empty'''"
+    showResult "foldr C7.treeInsert C7.EmptyTree [8,6,4,1,7,3,5]"
+    showResult "8 `C7.treeElem` C7.numsTree"
+    showResult "100 `C7.treeElem` C7.numsTree"
+    showResult "C7.Red C7.^== C7.Red"
+    showResult "C7.Red"
 
 
 runapp (Just x) = printStr "Not Implemented"
