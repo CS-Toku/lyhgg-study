@@ -2,9 +2,28 @@
 module Main where
 
 import System.Environment (getArgs)
-import Text.Read(readMaybe)
+import Text.Read (readMaybe)
+import Control.Arrow (second)
 
 import Language.Haskell.Interpreter
+
+
+unqualified = [ "Prelude"
+              , "Data.Either"
+              , "Chapter1"
+              , "Chapter2"
+              , "Chapter3"
+              ]
+qualified = [ ("Chapter4", "C4")
+            , ("Chapter5", "C5")
+            , ("Chapter6", "C6")
+            , ("Chapter7", "C7")
+            , ("Data.List", "List")
+            , ("Data.Map", "Map")
+            , ("Geometry.Cuboid", "Cuboid")
+            , ("Geometry.Sphere", "Sphere")
+            , ("Geometry.Cube", "Cube")
+            ]
 
 main :: IO ()
 main = do
@@ -12,10 +31,8 @@ main = do
         if args == []
             then putStrLn "Invalid Argment."
             else do 
-                let unqualified = zip ["Prelude", "Data.Either", "Chapter1", "Chapter2", "Chapter3"] $ repeat Nothing
-                let qualified = [("Chapter4", Just "C4"), ("Chapter5", Just "C5"), ("Chapter6", Just "C6"), ("Chapter7", Just "C7"), ("Data.List", Just "List"), ("Data.Map", Just "Map"), ("Geometry.Cuboid", Just "Cuboid"), ("Geometry.Sphere", Just "Sphere"), ("Geometry.Cube", Just "Cube")]
                 result <- runInterpreter $ do
-                    setImportsQ $ unqualified ++ qualified
+                    setImportsQ $ (zip unqualified $ repeat Nothing) ++ (map (second Just) qualified)
                     runapp.readMaybe.head $ args
                 case result of
                     Left (UnknownError x) -> putStrLn $ "UnknownError: " ++ x
